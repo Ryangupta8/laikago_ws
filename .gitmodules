@@ -1,3 +1,6 @@
 [submodule "vcpkg"]
 	path = vcpkg
 	url = ./vcpkg
+[submodule "laikago_sdk"]
+	path = laikago_sdk
+	url = ./laikago_sdk/
