@@ -10,11 +10,11 @@ In order to make the RealSense packages work, please see the following links:
   a) Note that in order to successfully ``` catkin build ``` these packages, you will need to take a look at this issue:
     https://github.com/IntelRealSense/realsense-ros/issues/821 (see comment by phil-ludewig)
 
+
+Download the LCM: http://lcm-proj.github.io/
+
 In order to build laikago_ros packages, please do the following:
 ```cd ~```
 ```git clone https://github.com/Ryangupta8/laikago_sdk.git```
 Then follow the instructions there in that README. In addition, you will need to update the CMakeLists.txt in the laikago_real package to reflect the location of the laikago_sdk folder.
 
-PLEASE NOTE:
-At the time this file was writen, some repositories are missing. For example lcm-x.x.x
-Updates to this file will come as they are received. 
