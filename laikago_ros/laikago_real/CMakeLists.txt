@@ -16,14 +16,14 @@ catkin_package(
 
 include_directories(
     include
-    /home/knapsack/laikago_sdk/include
+    /home/unitree/laikago_sdk/include
     ${Boost_INCLUDE_DIR}
     ${catkin_INCLUDE_DIRS}
 )
 
 add_compile_options(-std=c++11)
 
-link_directories(/home/knapsack/laikago_sdk/lib)
+link_directories(/home/unitree/laikago_sdk/lib)
 set(EXTRA_LIBS liblaikago_comm.so lcm)
 
 add_executable(position_lcm src/position_mode.cpp)
