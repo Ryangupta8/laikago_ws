@@ -12,9 +12,16 @@ In order to make the RealSense packages work, please see the following links:
 
 
 Download the LCM: http://lcm-proj.github.io/
+  a) I downloaded the lcm-1.4.0.zip and unzipped to the ```~/``` folder
+Follow the build instructions: http://lcm-proj.github.io/build_instructions.html
+
 
 In order to build laikago_ros packages, please do the following:
 ```cd ~```
 ```git clone https://github.com/Ryangupta8/laikago_sdk.git```
 Then follow the instructions there in that README. In addition, you will need to update the CMakeLists.txt in the laikago_real package to reflect the location of the laikago_sdk folder.
+
+After completing these steps, ensure you are in name_of_ws. 
+```source devel/setup.bash```
+```catkin build```
 
