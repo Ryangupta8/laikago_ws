@@ -537,5 +537,42 @@
       <inertia ixx="1.6854e-05" ixy="0.0" ixz="0.0" iyy="1.6854e-05" iyz="0.0" izz="1.6854e-05"/>
     </inertial>
   </link>
+
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.064 -0.065 0.154" rpy="0 0 0"/>
+    <parent link="trunk"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <link name="camera_link">
+    <visual>
+     <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
+      <geometry>
+       <mesh filename="../meshes/r200.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.003 0.065 0.007" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.012 0.132 0.020"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="camera_rgb_joint" type="fixed">
+    <origin xyz="$0.005 0.018 0.013" rpy="0 0 0"/>
+    <parent link="camera_link"/>
+    <child link="camera_rgb_frame"/>
+  </joint>
+  <link name="camera_rgb_frame"/>
+
+  <joint name="camera_rgb_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_rgb_optical_frame"/>
+  </joint>
+  <link name="camera_rgb_optical_frame"/>
+
+
 </robot>
 

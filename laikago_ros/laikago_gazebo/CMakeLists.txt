@@ -12,13 +12,17 @@ find_package(catkin REQUIRED COMPONENTS
     tf
     geometry_msgs
     laikago_msgs
+    pluginlib
+    nodelet
 )
 
 find_package(gazebo REQUIRED)
 
 catkin_package(
+    LIBRARIES laserscan_to_pointcloud pointcloud_to_laserscan
     CATKIN_DEPENDS 
     laikago_msgs 
+    pluginlib
 )
 
 include_directories(
