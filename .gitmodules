@@ -4,3 +4,6 @@
 [submodule "laikago_sdk"]
 	path = laikago_sdk
 	url = https://github.com/Ryangupta8/laikago_sdk
+[submodule "ahg_common"]
+	path = ahg_common
+	url = https://github.com/utexas-bwi/ahg_common.git
