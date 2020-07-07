@@ -9,7 +9,9 @@
     <!--<node name="map_server" pkg="map_server" type="map_server" args="$(find laikago_navigation)/maps/ahg_map.pgm 0.05"/>-->
    <!--</group>-->
 
-<node name="map_server" pkg="map_server" type="map_server" args="$(find laikago_navigation)/maps/ahg_map.pgm 0.05"/>
+<node name="map_server" pkg="map_server" type="map_server" args="$(find laikago_navigation)/maps/ahg_map.pgm 0.05">
+	<param name="frame_id" value="map"/>
+</node>
 
  <!--- Run AMCL --> 
  <include file="$(find laikago_navigation)/launch/amcl_diff.launch" />
