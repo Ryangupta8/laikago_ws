@@ -7,6 +7,6 @@
 [submodule "ahg_common"]
 	path = ahg_common
 	url = https://github.com/utexas-bwi/ahg_common.git
-[submodule "openpose_ros_weapper"]
+[submodule "openpose_ros_wrapper"]
 	path = openpose_ros_wrapper
 	url = https://github.com/ssteveminq/openpose_ros_wrapper
