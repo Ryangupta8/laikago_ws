@@ -1,11 +1,9 @@
-<?xml version="1.0"?>
+<!-- <?xml version="1.0"?> -->
 <launch>
-<node pkg="amcl" type="amcl" name="amcl" output="screen">
-<!--<rosparam file="$(find laikago_navigation)/config/amcl_params.yaml" command="load" />-->
- 
+<node pkg="amcl" type="amcl" name="amcl" output="screen"> 
 <!--   Publish scans from best pose at a max of 10 Hz-->
-  <param name="scan_topic" value="scan"/>
   <param name="initial_pose_x" value="91.429"/>
+  <!-- <param name="scan_topic" value="scan"/> -->
   <param name="initial_pose_y" value="100.364"/>
   <param name="base_frame_id" value="base"/>
   <param name="odom_model_type" value="diff"/>

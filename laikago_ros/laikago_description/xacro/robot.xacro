@@ -11,14 +11,15 @@
     <xacro:property name="rolloverProtection" value="false"/>
 
     <!-- Debug mode will hung up the robot, use "true" or "false" to switch it. -->
-    <xacro:if value="$(arg DEBUG)">
+    <!-- COMMENTED OUR BY RYAN -->
+<!--     <xacro:if value="$(arg DEBUG)">
         <link name="world"/>
         <joint name="base_static_joint" type="fixed">
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <parent link="world"/>
             <child link="base"/>
         </joint>
-    </xacro:if> 
+    </xacro:if>  -->
 
     <link name="base">
         <visual>
