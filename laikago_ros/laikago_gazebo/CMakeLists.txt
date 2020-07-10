@@ -26,7 +26,7 @@ catkin_package(
 )
 
 include_directories(
-    # include
+    include
     ${Boost_INCLUDE_DIR}
     ${catkin_INCLUDE_DIRS}
     ${GAZEBO_INCLUDE_DIRS}
