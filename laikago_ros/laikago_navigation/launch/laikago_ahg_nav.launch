@@ -30,6 +30,7 @@
      <node pkg="rviz" type="rviz" name="rviz" args="-d $(find laikago_gazebo)/config/laikago.rviz" output="screen"/>
   </group>
 
+  <!--<node name ="map_to_laikago" pkg="laikago_navigation" type="laikago_localization.sh" output="screen"/>-->
   <!--<node name ="map_to_laikago" pkg="tf" type="static_transform_publisher" args="92 98 0 0 0 0 /map /base 10"/>-->
 
 </launch>

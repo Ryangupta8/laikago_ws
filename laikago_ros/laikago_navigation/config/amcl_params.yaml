@@ -1,12 +1,12 @@
-#use_map_topic: true
+use_map_topic: true
 
 odom_frame_id: "odom"
 base_frame_id: "base"
 global_frame_id: "map"
 
 scan_topic: "scan"
-initial_pos_x: 2
-initial_pos_y: 2
+initial_pos_x: 95.0
+initial_pos_y: 98
 initial_pos_a: 0
 
 ## Publish scans from best pose at a max of 10 Hz
