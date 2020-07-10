@@ -63,5 +63,31 @@
             </link>
         </model>
 
+<actor name="human_34903">
+  <pose>
+    9.0125313723695335 2.954767308208083 0 0 0 -2.05801548069713356
+  </pose>
+  <link name="link">
+    <collision name="box">
+      <pose>0 0 0.9 0 0 0</pose>
+      <geometry>
+        <box>
+          <size>0.76 0.33 1.77</size>
+        </box>
+      </geometry>
+    </collision>
+    <visual name="visual">
+      <pose>0 0 0.02 0.04 0 0</pose>
+      <geometry>
+        <mesh>
+          <uri>model://elegant_female2/meshes/elegant_female2.dae</uri>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+</actor>
+
+
+
     </world>
 </sdf>
