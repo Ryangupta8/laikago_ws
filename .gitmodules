@@ -10,3 +10,6 @@
 [submodule "openpose_ros_wrapper"]
 	path = openpose_ros_wrapper
 	url = https://github.com/ssteveminq/openpose_ros_wrapper
+[submodule "geometry2"]
+	path = geometry2
+	url = https://github.com/ros/geometry2/tree/melodic-devel
