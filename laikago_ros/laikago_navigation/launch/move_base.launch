@@ -1,26 +1,19 @@
-<!-- <?xml version="1.0"?> -->
+<?xml version="1.0"?>
 <launch>
 
    <master auto="start"/>
    <arg name="slam" default="false"/>
 
-   <group unless="$(arg slam)">
+   <!--<group unless="$(arg slam)">-->
  <!-- Run the map server --> 
-    <node name="map_server" pkg="map_server" type="map_server" args="$(find laikago_navigation)/maps/ahg_map.pgm 0.05"/>
-   </group>
+    <!--<node name="map_server" pkg="map_server" type="map_server" args="$(find laikago_navigation)/maps/ahg_map.pgm 0.05"/>-->
+   <!--</group>-->
 
+<node name="map_server" pkg="map_server" type="map_server" args="$(find laikago_navigation)/maps/ahg_map.pgm 0.05"/>
 
  <!--- Run AMCL --> 
-    <include file="$(find laikago_navigation)/launch/amcl_diff.launch" />
-
-   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find laikago_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
-    <rosparam file="$(find laikago_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find laikago_navigation)/config/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find laikago_navigation)/config/global_costmap_params.yaml" command="load" /> 
-    <rosparam file="$(find laikago_navigation)/config/base_local_planner_params.yaml" command="load" />
- </node>
-
+ <include file="$(find laikago_navigation)/launch/amcl_diff.launch" />
+  
     <!--<include file="$(find laikago_navigation)/launch/amcl.launch">-->
       <!--<arg name="scan_topic" value="scan" />-->
       <!--<arg name="initial_pose_x" value="5.0"/>-->
@@ -29,10 +22,12 @@
       <!--<arg name="odom_frame"  value="odom"/>-->
       <!--<arg name="base_frame"  value="base"/>-->
   <!--</include>-->
-
-<!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find laikago_navigation)/maps/ahg_map.pgm 0.05">
-  <param name="frame_id" value="map"/>
-</node> -->
-
+   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find laikago_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
+    <rosparam file="$(find laikago_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find laikago_navigation)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find laikago_navigation)/config/global_costmap_params.yaml" command="load" /> 
+    <rosparam file="$(find laikago_navigation)/config/base_local_planner_params.yaml" command="load" />
+</node>
 
 </launch> 

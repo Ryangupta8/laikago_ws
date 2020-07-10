@@ -9,47 +9,50 @@
     <arg name="ahg_sim" default="false"/>
     
     <group unless="$(arg ahg_sim)">
-      <!--Gazebo empty world launch file-->
-      <include file="$(find gazebo_ros)/launch/empty_world.launch">
-      <arg name="world_name" value="$(find laikago_gazebo)/launch/world/normal.world"/>
-      <arg name="debug" value="$(arg debug)"/>
-      <arg name="gui" value="$(arg gui)"/>
-      <arg name="paused" value="$(arg paused)"/>
-      <arg name="use_sim_time" value="$(arg use_sim_time)"/>
-      <arg name="headless" value="$(arg headless)"/>
-      </include>
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find laikago_gazebo)/launch/world/normal.world"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="headless" value="$(arg headless)"/>
+    </include>
     </group>
     <group if="$(arg ahg_sim)">
-	  <include file="$(find ahg_gazebo_simulation)/launch/ahg_apartment.launch">
-		  <arg name="gui" value="true" />
-		  <arg name="use_sim_time" value="true"/>
-	    </include>
-    </group>
+	<include file="$(find ahg_gazebo_simulation)/launch/ahg_apartment.launch">
+		<arg name="gui" value="true" />
+		<arg name="use_sim_time" value="true"/>
+	  </include>
+      </group>
+
 
     <!-- Load the URDF into the ROS Parameter Server -->
-  <param name="robot_description" command="$(find xacro)/xacro '$(find laikago_description)/xacro/robot.xacro' DEBUG:=$(arg user_debug)"/>
-  
-  <!--Nodes-->
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
-  
-  <!-- convert joint states to TF transforms for rviz, etc -->
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" respawn="false" output="screen">
-    <remap from="/joint_states" to="/laikago_gazebo/joint_states"/>
-  </node>
+    <param name="robot_description"
+           command="$(find xacro)/xacro '$(find laikago_description)/xacro/robot.xacro' 
+           DEBUG:=$(arg user_debug)"/>
 
-  <node pkg="gazebo_ros" type="spawn_model" name="urdf_spawner" respawn="false" output="screen" args="-urdf -x -7.0 -y 0.1 -z 0.6 -model laikago_gazebo -param robot_description -unpause"/>  
+    <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+    <!-- Set trunk and joint positions at startup -->
+    <node pkg="gazebo_ros" type="spawn_model" name="urdf_spawner" respawn="false" output="screen"
+          args="-urdf -x -7.0 -y 0.1 -z 0.6 -model laikago_gazebo -param robot_description -unpause"/>
 
-  <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find laikago_gazebo)/config/robot_control.yaml" command="load"/>
+    <!-- Load joint controller configurations from YAML file to parameter server -->
+    <rosparam file="$(find laikago_gazebo)/config/robot_control.yaml" command="load"/>
 
-  <!-- load the controllers -->
-  <node pkg="controller_manager" type="spawner" name="controller_spawner" respawn="false"
+    <!-- load the controllers -->
+    <node pkg="controller_manager" type="spawner" name="controller_spawner" respawn="false"
           output="screen" ns="/laikago_gazebo" args="joint_state_controller
           FL_hip_controller FL_thigh_controller FL_calf_controller
           FR_hip_controller FR_thigh_controller FR_calf_controller
           RL_hip_controller RL_thigh_controller RL_calf_controller
           RR_hip_controller RR_thigh_controller RR_calf_controller "/>
 
-  <include file="$(find laikago_gazebo)/launch/velodyne_2d.launch"/>
+    <!-- convert joint states to TF transforms for rviz, etc -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"
+          respawn="false" output="screen">
+        <remap from="/joint_states" to="/laikago_gazebo/joint_states"/>
+    </node>
+
+    <!-- <node pkg="laikago_gazebo" type="servo" name="servo" required="true" output="screen"/> -->
 
 </launch>
