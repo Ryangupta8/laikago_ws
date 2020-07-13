@@ -1,3 +1,8 @@
+/************************************************************************
+Copyright (c) 2018-2019, Unitree Robotics.Co.Ltd. All rights reserved.
+Use of this source code is governed by the MPL-2.0 license, see LICENSE.
+************************************************************************/
+
 #include "ros/ros.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +17,7 @@
 #include <string.h>
 #include <math.h>
 #include <nav_msgs/Odometry.h>
-#include <laikago_gazebo/body.h>
+#include "../body.h"
 
 using namespace std;
 using namespace laikago_model;
@@ -187,27 +192,41 @@ private:
     ros::Subscriber servo_sub[12], footForce_sub[4], imu_sub;
 };
 
-
-
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-	ros::init(argc, argv, "laikago_gazebo_servo");
+    ros::init(argc, argv, "laikago_gazebo_servo");
 
     multiThread listen_publish_obj;
-    // ros::AsyncSpinner spinner(1); // one threads
-    // spinner.start();
-    // usleep(300000); // must wait 300ms, to get first state
+    ros::AsyncSpinner spinner(1); // one threads
+    spinner.start();
+    usleep(300000); // must wait 300ms, to get first state
 
-    // ros::NodeHandle n;
-    // ros::Publisher lowState_pub; //for rviz visualization
+    ros::NodeHandle n;
+    ros::Publisher lowState_pub; //for rviz visualization
+    // ros::Rate loop_rate(1000);
+    // the following nodes have been initialized by "gazebo.launch"
+    lowState_pub = n.advertise<laikago_msgs::LowState>("/laikago_gazebo/lowState/state", 1);
+    servo_pub[0] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FR_hip_controller/command", 1);
+    servo_pub[1] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FR_thigh_controller/command", 1);
+    servo_pub[2] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FR_calf_controller/command", 1);
+    servo_pub[3] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FL_hip_controller/command", 1);
+    servo_pub[4] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FL_thigh_controller/command", 1);
+    servo_pub[5] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FL_calf_controller/command", 1);
+    servo_pub[6] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RR_hip_controller/command", 1);
+    servo_pub[7] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RR_thigh_controller/command", 1);
+    servo_pub[8] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RR_calf_controller/command", 1);
+    servo_pub[9] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RL_hip_controller/command", 1);
+    servo_pub[10] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RL_thigh_controller/command", 1);
+    servo_pub[11] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RL_calf_controller/command", 1);
 
-    // motion_init();
+    motion_init();
 
-    // while (ros::ok()){
-        
-    //     control logic
-        
-    //     lowState_pub.publish(lowState);
-    //     sendServoCmd();
-    // }
+    while (ros::ok()){
+        /*
+        control logic
+        */
+        lowState_pub.publish(lowState);
+        sendServoCmd();
+    }
+    return 0;
 }

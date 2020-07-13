@@ -23,6 +23,7 @@ catkin_package(
     CATKIN_DEPENDS 
     laikago_msgs 
     pluginlib
+    INCLUDE_DIRS include 
 )
 
 include_directories(
@@ -58,4 +59,9 @@ target_link_libraries(laikago_external_force ${catkin_LIBRARIES})
 add_executable(laikago_servo src/exe/servo.cpp)
 target_link_libraries(laikago_servo ${PROJECT_NAME} ${catkin_LIBRARIES})
 
+add_executable(test_gazebo_pos_control src/exe/test_gazebo_pos_control.cpp)
+target_link_libraries(test_gazebo_pos_control ${PROJECT_NAME} ${catkin_LIBRARIES})
 
+install(DIRECTORY include/${PROJECT_NAME}/
+	DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+       	FILES_MATCHING PATTERN "*.h")
