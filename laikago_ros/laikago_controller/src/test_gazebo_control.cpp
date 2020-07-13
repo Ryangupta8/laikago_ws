@@ -1,8 +1,3 @@
-/************************************************************************
-Copyright (c) 2018-2019, Unitree Robotics.Co.Ltd. All rights reserved.
-Use of this source code is governed by the MPL-2.0 license, see LICENSE.
-************************************************************************/
-
 #include "ros/ros.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +12,10 @@ Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 #include <string.h>
 #include <math.h>
 #include <nav_msgs/Odometry.h>
-#include "../body.h"
+#include <laikago_gazebo/body.h>
+
+#include "laikago_controller/joint_controller.h"
+
 
 using namespace std;
 using namespace laikago_model;
@@ -192,9 +190,34 @@ private:
     ros::Subscriber servo_sub[12], footForce_sub[4], imu_sub;
 };
 
-int main(int argc, char **argv)
+void paramInit(laikago_msgs::LowCmd lowCmd)
 {
-    ros::init(argc, argv, "laikago_gazebo_servo");
+    for(int i=0; i<4; i++){
+        lowCmd.motorCmd[i*3+0].mode = 0x0A;
+        lowCmd.motorCmd[i*3+0].positionStiffness = 70;
+        lowCmd.motorCmd[i*3+0].velocity = 0;
+        lowCmd.motorCmd[i*3+0].velocityStiffness = 3;
+        lowCmd.motorCmd[i*3+0].torque = 0;
+        lowCmd.motorCmd[i*3+1].mode = 0x0A;
+        lowCmd.motorCmd[i*3+1].positionStiffness = 180;
+        lowCmd.motorCmd[i*3+1].velocity = 0;
+        lowCmd.motorCmd[i*3+1].velocityStiffness = 8;
+        lowCmd.motorCmd[i*3+1].torque = 0;
+        lowCmd.motorCmd[i*3+2].mode = 0x0A;
+        lowCmd.motorCmd[i*3+2].positionStiffness = 300;
+        lowCmd.motorCmd[i*3+2].velocity = 0;
+        lowCmd.motorCmd[i*3+2].velocityStiffness = 15;
+        lowCmd.motorCmd[i*3+2].torque = 0;
+    }
+    for(int i=0; i<12; i++){
+        lowCmd.motorCmd[i].position = lowState.motorState[i].position;
+    }
+}
+
+
+int main(int argc, char *argv[])
+{
+	ros::init(argc, argv, "laikago_gazebo_servo");
 
     multiThread listen_publish_obj;
     ros::AsyncSpinner spinner(1); // one threads
@@ -202,39 +225,43 @@ int main(int argc, char **argv)
     usleep(300000); // must wait 300ms, to get first state
 
     ros::NodeHandle n;
-    ros::Publisher lowState_pub; //for rviz visualization
-    // ros::Rate loop_rate(1000);
-    // the following nodes have been initialized by "gazebo.launch"
-    lowState_pub = n.advertise<laikago_msgs::LowState>("/laikago_gazebo/lowState/state", 1);
-    servo_pub[0] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FR_hip_controller/command", 1);
-    servo_pub[1] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FR_thigh_controller/command", 1);
-    servo_pub[2] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FR_calf_controller/command", 1);
-    servo_pub[3] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FL_hip_controller/command", 1);
-    servo_pub[4] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FL_thigh_controller/command", 1);
-    servo_pub[5] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/FL_calf_controller/command", 1);
-    servo_pub[6] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RR_hip_controller/command", 1);
-    servo_pub[7] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RR_thigh_controller/command", 1);
-    servo_pub[8] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RR_calf_controller/command", 1);
-    servo_pub[9] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RL_hip_controller/command", 1);
-    servo_pub[10] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RL_thigh_controller/command", 1);
-    servo_pub[11] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RL_calf_controller/command", 1);
+    ros::Publisher lowState_pub = n.advertise<laikago_msgs::LowState>("/laikago_gazebo/lowState/state", 1000); //for rviz visualization
+    ros::Publisher servo_pub[12];
+    // motion_init();
+    laikago_msgs::LowCmd lowCmd;
+    laikago_msgs::LowState lowState;
+    paramInit(lowCmd);
 
-    motion_init();
+    
 
     while (ros::ok()){
         /*
         control logic
         */
-        double pos1[12] = {0.0, 0.0, -1.3, -0.0, 0.67, -1.3, 
-                      0.0, 0.67, -1.3, -0.0, 0.67, -1.3};
-        moveAllPosition(pos1, 200);
-
+        double duration = 250.0;
         double pos2[12] = {0.0, 0.67, -1.3, -0.0, 0.67, -1.3, 
                       0.0, 0.67, -1.3, -0.0, 0.67, -1.3};
-        moveAllPosition(pos2, 200);
+        double lastPos[12], percent;
 
+        
+
+        for(int j=0; j<12; j++) lastPos[j] = lowState.motorState[j].position;
+        for(int i=1; i<=duration; i++){
+            if(!ros::ok()) break;
+            percent = (double)i/duration;
+            for(int j=0; j<12; j++){
+                lowCmd.motorCmd[j].position = lastPos[j]*(1-percent) + pos2[j]*percent; 
+            }
+        }
+        for(int m=0; m<12; m++){
+            std::cout << "lowCmd.motorCmd[m]: " << m << "\n" << lowCmd.motorCmd[m] << std::endl;
+            // servo_pub[m].publish(lowCmd.motorCmd[m]);
+        }
+        // ros::spinOnce();
+        // usleep(1000);
+
+        
         lowState_pub.publish(lowState);
-        sendServoCmd();
+        // sendServoCmd();
     }
-    return 0;
 }

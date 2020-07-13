@@ -43,6 +43,9 @@ include_directories(/home/knapsack/robots/laikago_sdk/include)
 add_library(${PROJECT_NAME}
     ../laikago_gazebo/src/body.cpp 
 )
+# add_library(${PROJECT_NAME}
+#     src/joint_controller.cpp 
+# )
 
 link_directories($(catkin_LIB_DIRS) lib)
 #################################################
@@ -59,9 +62,9 @@ add_dependencies(laikago_joint_controller laikago_msgs_gencpp)
 target_link_libraries(laikago_joint_controller ${catkin_LIBRARIES} laikago_control_tool)
 
 
-add_executable(test_joint_control src/test_joint_control.cpp)
-add_dependencies(test_joint_control laikago_joint_controller laikago_controller ${catkin_EXPORTED_TARGETS})
-target_link_libraries(test_joint_control ${PROJECT_NAME} ${catkin_LIBRARIES})
+add_executable(test_gazebo_control src/test_gazebo_control.cpp)
+add_dependencies(test_gazebo_control laikago_joint_controller laikago_controller laikago_msgs_gencpp ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_gazebo_control ${PROJECT_NAME} ${catkin_LIBRARIES} laikago_joint_controller laikago_control_tool)
 
  
 install(DIRECTORY include/${PROJECT_NAME}/
