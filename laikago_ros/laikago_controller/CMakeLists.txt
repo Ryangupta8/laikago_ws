@@ -21,6 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
     geometry_msgs
     pluginlib
     nodelet
+    control_toolbox
 )
 
 catkin_package(
@@ -30,41 +31,34 @@ catkin_package(
     controller_interface
     hardware_interface
     pluginlib
+    control_toolbox
     roscpp
     INCLUDE_DIRS include 
     LIBRARIES ${PROJECT_NAME}
 )
 
 include_directories(include ${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS})
-include_directories(/home/knapsack/robots/laikago_sdk/include)
 
 
 # Declare a C++ library
 add_library(${PROJECT_NAME}
     ../laikago_gazebo/src/body.cpp 
 )
-# add_library(${PROJECT_NAME}
-#     src/joint_controller.cpp 
-# )
 
 link_directories($(catkin_LIB_DIRS) lib)
-#################################################
-# add_dependencies(${PROJECT_NAME} laikago_msgs_gencpp)
 
-# add_library(LaikagoFootContactPlugin SHARED plugin/foot_contact_plugin.cc)
-# target_link_libraries(LaikagoFootContactPlugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-
-# add_library(LaikagoDrawForcePlugin SHARED plugin/draw_force_plugin.cc)
-# target_link_libraries(LaikagoDrawForcePlugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-#################################################3
 add_library(laikago_joint_controller src/joint_controller.cpp)
 add_dependencies(laikago_joint_controller laikago_msgs_gencpp)
 target_link_libraries(laikago_joint_controller ${catkin_LIBRARIES} laikago_control_tool)
 
 
 add_executable(test_gazebo_control src/test_gazebo_control.cpp)
-add_dependencies(test_gazebo_control laikago_joint_controller laikago_controller laikago_msgs_gencpp ${catkin_EXPORTED_TARGETS})
-target_link_libraries(test_gazebo_control ${PROJECT_NAME} ${catkin_LIBRARIES} laikago_joint_controller laikago_control_tool)
+add_dependencies(test_gazebo_control laikago_msgs_gencpp ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_gazebo_control ${PROJECT_NAME} ${catkin_LIBRARIES})
+
+add_executable(test_joint_control src/test_joint_control.cpp)
+add_dependencies(test_joint_control laikago_joint_controller laikago_msgs_gencpp ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_joint_control ${PROJECT_NAME} ${catkin_LIBRARIES} laikago_joint_controller laikago_control_tool)
 
  
 install(DIRECTORY include/${PROJECT_NAME}/
