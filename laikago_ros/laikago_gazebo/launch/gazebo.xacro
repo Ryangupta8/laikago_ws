@@ -301,10 +301,10 @@
         <self_collide>1</self_collide>
     </gazebo>
     <gazebo reference="FL_foot">
-        <mu1>0.6</mu1>
-        <mu2>0.0</mu2>
         <!-- <mu1>0.6</mu1>
-        <mu2>0.6</mu2> -->
+        <mu2>0.0</mu2> -->
+        <mu1>0.6</mu1>
+        <mu2>0.6</mu2>
         <self_collide>1</self_collide>
         <material>Gazebo/DarkGrey</material>
         <kp  value="1000000.0"/>
@@ -331,10 +331,10 @@
         <self_collide>1</self_collide>
     </gazebo>
     <gazebo reference="FR_foot">
-        <mu1>0.6</mu1>
-        <mu2>0.0</mu2>
         <!-- <mu1>0.6</mu1>
-        <mu2>0.6</mu2> -->
+        <mu2>0.0</mu2> -->
+        <mu1>0.6</mu1>
+        <mu2>0.6</mu2>
         <self_collide>1</self_collide>
         <material>Gazebo/DarkGrey</material>
         <kp  value="1000000.0"/>
@@ -361,10 +361,10 @@
         <self_collide>1</self_collide>
     </gazebo>
     <gazebo reference="RL_foot">
-        <mu1>0.6</mu1>
-        <mu2>0.0</mu2>
         <!-- <mu1>0.6</mu1>
-        <mu2>0.6</mu2> -->
+        <mu2>0.0</mu2> -->
+        <mu1>0.6</mu1>
+        <mu2>0.6</mu2>
         <self_collide>1</self_collide>
         <material>Gazebo/DarkGrey</material>
         <kp  value="1000000.0"/>
@@ -391,10 +391,10 @@
         <self_collide>1</self_collide>
     </gazebo>
     <gazebo reference="RR_foot">
-        <mu1>0.6</mu1>
-        <mu2>0.0</mu2>
         <!-- <mu1>0.6</mu1>
-        <mu2>0.6</mu2> -->
+        <mu2>0.0</mu2> -->
+        <mu1>0.6</mu1>
+        <mu2>0.6</mu2>
         <self_collide>1</self_collide>
         <material>Gazebo/DarkGrey</material>
         <kp  value="1000000.0"/>
