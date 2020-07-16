@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
     laikago_msgs
     pluginlib
     nodelet
+    std_msgs
 )
 
 find_package(gazebo REQUIRED)
@@ -23,6 +24,7 @@ catkin_package(
     CATKIN_DEPENDS 
     laikago_msgs 
     pluginlib
+    std_msgs
     INCLUDE_DIRS include 
 )
 

@@ -10,6 +10,7 @@ Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 #include "laikago_msgs/LowState.h"
 #include "laikago_msgs/MotorCmd.h"
 #include "laikago_msgs/MotorState.h"
+#include "std_msgs/Float64MultiArray.h"
 #include <geometry_msgs/WrenchStamped.h>
 #include <sensor_msgs/Imu.h>
 #include <std_msgs/Bool.h>
@@ -192,6 +193,11 @@ private:
     ros::Subscriber servo_sub[12], footForce_sub[4], imu_sub;
 };
 
+
+void joint_traj_cb(const std_msgs::Float64MultiArray::ConstPtr& msg){
+    ROS_INFO("I heard: [%s]", msg->data);
+}
+
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "laikago_gazebo_servo");
@@ -219,6 +225,8 @@ int main(int argc, char **argv)
     servo_pub[10] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RL_thigh_controller/command", 1);
     servo_pub[11] = n.advertise<laikago_msgs::MotorCmd>("/laikago_gazebo/RL_calf_controller/command", 1);
 
+    ros::Subscriber sub = n.subscribe("/laikago/joint_trajectory", 1000, joint_traj_cb);
+
     motion_init();
 
     while (ros::ok()){
@@ -226,11 +234,11 @@ int main(int argc, char **argv)
         control logic
         */
         double pos1[12] = {0.0, 0.0, -1.3, -0.0, 0.67, -1.3, 
-                      0.0, 0.67, -1.3, -0.0, 0.67, -1.3};
+                      0.0, 0.0, -1.3, -0.0, 0.67, -1.3};
         moveAllPosition(pos1, 200);
 
-        double pos2[12] = {0.0, 0.67, -1.3, -0.0, 0.67, -1.3, 
-                      0.0, 0.67, -1.3, -0.0, 0.67, -1.3};
+        double pos2[12] = {0.0, 0.67, -1.3, -0.0, 0.0, -1.3, 
+                      0.0, 0.67, -1.3, -0.0, 0.0, -1.3};
         moveAllPosition(pos2, 200);
 
         lowState_pub.publish(lowState);
