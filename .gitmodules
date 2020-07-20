@@ -1,6 +1,3 @@
-[submodule "vcpkg"]
-	path = vcpkg
-	url = https://github.com/Microsoft/vcpkg
 [submodule "laikago_sdk"]
 	path = laikago_sdk
 	url = https://github.com/Ryangupta8/laikago_sdk
